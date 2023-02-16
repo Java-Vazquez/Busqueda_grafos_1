@@ -1,0 +1,111 @@
+from collections import defaultdict
+import heapq
+
+#BÚSQUEDA A LO ANCHO
+def Busqueda_a_lo_ancho(grafo, origen, destino):
+	visitados = []
+	caminos = [[origen]]
+	porVisitar = [] 
+	
+	if origen == destino:
+		print("Ya se encuentra en el destino")
+		return
+	
+	while caminos:
+		ruta = caminos.pop(0)
+		actual = ruta[-1]
+
+		if actual not in visitados:
+			for key, lista in grafo[actual]:
+				if key not in visitados:
+					porVisitar.append(key)
+		 
+			for hijo in porVisitar:
+				ruta_actual = list(ruta)
+				ruta_actual.append(hijo)
+				caminos.append(ruta_actual)
+				
+				if hijo == destino:
+					print("Mejor camino = ", *ruta_actual)
+					return
+			visitados.append(actual)
+	 
+	print("No existe una manera de llegar de ese desde ", *origen," hasta ", *destino)
+	return
+
+
+#BÚSQUEDA DIJKSTRA
+def dijkstra(grafo2, start, end):
+    distances = defaultdict(lambda: float('inf'))
+    distances[start] = 0
+    heap = [(0, start)]
+    while heap:
+        dist, node = heapq.heappop(heap)
+        if node == end:
+            return dist
+        if dist > distances[node]:
+            continue
+        for neighbor, weight in grafo2[node].items():
+            new_dist = dist + weight
+            if new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                heapq.heappush(heap, (new_dist, neighbor))
+    return float('inf')
+	
+
+#CREACIÓN DE GRAFOS
+#El grafo1 es un grafo dirigido con pesos iguales
+
+#Grafo de busqueda a lo ancho
+grafo1 = {'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5)],
+      		'Felipe Carrillo Puerto': [('Campeche',5)],
+			'Campeche': [('Merida',5),('Chetumal',5),('Ciudad del Carmen',5) ],
+			'Merida':[],
+			'Chetumal': [('Ciudad del Carmen',5)],
+			'Ciudad del Carmen': [('Villa Hermosa',5),('Tuxtla',5)],
+			'Villa Hermosa': [('Acayucan',5)], 
+			'Tuxtla': [('Acayucan',5)],
+			'Acayucan': [('Tehuacantepec',5), ('Alvarado',5)],
+			'Tehuacantepec' : [],
+			'Alvarado'  : [('Oaxaca',5)],
+			'Oaxaca' : [('Puerto Angel',5),('Tehuacan',5),('Izucar de Matamoros',5)],
+			'Puerto Angel' : [('Pinotepa Nacional',5)],
+			'Pinotepa Nacional' : [('Acapulco',5)],
+			'Acapulco' : [('Chilpancingo',5)],
+			'Chilpancingo' : [('Iguala',5)],
+			'Iguala' : [('Cuernavaca',5),('Ciudad Altamirano',5)],
+			'Izucar de Matamoros' : [('Puebla',5),('Cuernavaca',5)],
+			'Puebla' : [('Cordoba',5),('CDMX',5)],
+			'Cordoba' : [('Veracruz',5)],
+			'Veracruz' : [],
+			'Cuernavaca' : [('CDMX',5), ('Ciudad Altamirano',5)],
+			'CDMX' : [('Pachuca de Soto',5),('Queretaro',5),('Toluca de Lerdo',5),('Tlaxcala',5)],
+			'Tlaxcala' : [],
+			'Toluca de Lerdo' : [('Ciudad Altamirano',5)],
+			'Ciudad Altamirano' : [('Zihuatanejo',5)],
+			'Zihuatanejo' : [('Playa Azul',5)],
+			'Playa Azul' : [('Morelia',5), ('Colima',5), ('Manzanillo',5)],
+			'Morelia' : [('Colima',5), ('Salamanca')],
+			'Colima' : [('Manzanillo',5), ('Guadalajara',5)],
+			'Manzanillo' : [('Guadalajara')]
+
+
+
+
+			
+		}
+
+#Grafo con pesos distintos
+grafo2 = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1},
+}
+
+
+origen = input("Ingresa el nodo de origen: ")
+destino = input("Ingresa el nodo de destino: ")
+
+Busqueda_a_lo_ancho(grafo1, str(origen), str(destino))
+print(dijkstra(grafo2, 'A', 'D')) 
