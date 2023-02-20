@@ -26,7 +26,7 @@ def Busqueda_a_lo_ancho(grafo, origen, destino):
 				caminos.append(ruta_actual)
 				
 				if hijo == destino:
-					print("Mejor camino = ", *ruta_actual)
+					print("Mejor camino = ", ' -> '.join(ruta_actual))
 					return
 			visitados.append(actual)
 	 
@@ -35,27 +35,72 @@ def Busqueda_a_lo_ancho(grafo, origen, destino):
 
 
 #BÚSQUEDA DIJKSTRA
-def dijkstra(grafo2, start, end):
-    distances = defaultdict(lambda: float('inf'))
-    distances[start] = 0
-    heap = [(0, start)]
-    while heap:
-        dist, node = heapq.heappop(heap)
-        if node == end:
-            return dist
-        if dist > distances[node]:
+def dijkstra(grafo, inicio, fin):
+    # Inicializar distancia a cada nodo como infinita, excepto al nodo inicial que tiene distancia 0
+    distancias = {nodo: float('inf') for nodo in grafo}
+    distancias[inicio] = 0
+
+    # Inicializar cola con el nodo inicial y su distancia
+    cola = [(0, inicio)]
+
+    # Inicializar diccionario para llevar registro del camino más corto a cada nodo
+    camino = {inicio: []}
+
+    while cola:
+        # Obtener el nodo con menor distancia hasta el momento
+        (dist, nodo_actual) = heapq.heappop(cola)
+
+        # Si llegamos al nodo final, retornar el camino más corto y su distancia
+        if nodo_actual == fin:
+            return (dist, camino[nodo_actual] + [nodo_actual])
+
+        # Si ya procesamos el nodo actual en una iteración previa, continuar con el siguiente
+        if dist > distancias[nodo_actual]:
             continue
-        for neighbor, weight in grafo2[node].items():
-            new_dist = dist + weight
-            if new_dist < distances[neighbor]:
-                distances[neighbor] = new_dist
-                heapq.heappush(heap, (new_dist, neighbor))
-    return float('inf')
+
+        # Recorrer los nodos hijos del nodo actual
+        for hijo, peso in grafo[nodo_actual].items():
+            # Calcular la distancia acumulada con el nodo hijo
+            nueva_distancia = dist + peso
+
+            # Si encontramos un camino más corto, actualizar la distancia y la cola
+            if nueva_distancia < distancias[hijo]:
+                distancias[hijo] = nueva_distancia
+                heapq.heappush(cola, (nueva_distancia, hijo))
+                camino[hijo] = camino[nodo_actual] + [nodo_actual]
+
+    # Si no encontramos una ruta al nodo final, regresar None
+    return None
 	
+#Búsqueda por profundidad
+# Definimos la función para realizar la búsqueda por profundidad
+def busqueda_profundidad_con_peso(grafo, nodo_inicial, nodo_final):
+    # Creamos una lista para almacenar los nodos visitados
+    visitados = []
+    # Creamos una pila para almacenar los nodos por visitar
+    pila = [(nodo_inicial, [])]
+    # Mientras la pila no esté vacía
+    while pila:
+        # Obtenemos el siguiente nodo a visitar y la ruta hasta el mismo
+        nodo, ruta = pila.pop()
+        # Si no hemos visitado el nodo aún
+        if nodo not in visitados:
+            # Lo añadimos a la lista de visitados
+            visitados.append(nodo)
+            # Si llegamos al nodo final, terminamos la búsqueda
+            if nodo == nodo_final:
+                ruta.append(nodo)
+                break
+            # Obtenemos los vecinos del nodo actual
+            vecinos = grafo[nodo]
+            # Añadimos los vecinos a la pila para visitarlos posteriormente
+            for vecino, peso_vecino in vecinos.items():
+                pila.append((vecino, ruta + [nodo]))
+    # Devolvemos la ruta encontrada
+    return ruta
+
 
 #CREACIÓN DE GRAFOS
-#El grafo1 es un grafo dirigido con pesos iguales
-
 #Grafo de busqueda a lo ancho
 #Grafo con los pesos iguales a 5 en todas las rutas
 grafo_pesos_iguales = {'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5)],
@@ -224,5 +269,21 @@ grafo_con_pesos = {
 origen = input("Ingresa el nodo de origen: ")
 destino = input("Ingresa el nodo de destino: ")
 
+#Búsqueda a los ancho
+print("\nBúsqueda a lo ancho:")
 Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen), str(destino))
-print(dijkstra(grafo_con_pesos, str(origen), str(destino)))
+print("----------------------------------------------------------\n")
+#Búsqueda por Dijkstra
+print("Dijkstra:")
+mensaje = dijkstra(grafo_con_pesos, str(origen), str(destino))
+if mensaje is None:
+    print(f"No se encontró ruta desde {origen} hasta {destino}.")
+else:
+    distancia, camino = mensaje
+    print(f"La ruta más corta desde {origen} hasta {destino} es: {camino}")
+    print(f"Su peso es: {distancia}")
+print("----------------------------------------------------------\n")
+#Búsqueda por profundidad
+print("Búsqueda por profundidad:")
+ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen), str(destino))
+print("Camino encontrado = ", ' -> '.join(ruta))
