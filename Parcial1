@@ -72,7 +72,7 @@ def dijkstra(grafo, inicio, fin):
     # Si no encontramos una ruta al nodo final, regresar None
     return None
 	
-#Búsqueda por profundidad
+#Búsqueda por profundidad SIMPLE
 # Definimos la función para realizar la búsqueda por profundidad
 def busqueda_profundidad_con_peso(grafo, nodo_inicial, nodo_final):
     # Creamos una lista para almacenar los nodos visitados
@@ -100,12 +100,63 @@ def busqueda_profundidad_con_peso(grafo, nodo_inicial, nodo_final):
     return ruta
 
 
+#Búsqueda por profundidad ITERATIVA
+# Definimos la función para realizar la búsqueda por profundidad iterativa
+def busqueda_profundidad_iterativa(grafo, nodo_inicial, nodo_final):
+    # Iteramos sobre la profundidad máxima desde 0 hasta el infinito
+    for profundidad_maxima in range(len(grafo)):
+        # Creamos una lista para almacenar los nodos visitados
+        visitados = []
+        # Creamos una pila para almacenar los nodos por visitar
+        pila = [(nodo_inicial, 0)]
+        # Mientras la pila no esté vacía
+        while pila:
+            # Obtenemos el siguiente nodo a visitar y su profundidad
+            nodo, profundidad = pila.pop()
+            # Si no hemos visitado el nodo aún y su profundidad es menor o igual a la profundidad máxima
+            if nodo not in visitados and profundidad <= profundidad_maxima:
+                # Lo añadimos a la lista de visitados
+                visitados.append(nodo)
+                # Si llegamos al nodo final, terminamos la búsqueda
+                if nodo == nodo_final:
+                    return visitados
+                # Obtenemos los vecinos del nodo actual y sus pesos
+                vecinos = grafo[nodo]
+                # Añadimos los vecinos a la pila con una profundidad mayor en 1
+                for vecino, peso in vecinos.items():
+                    pila.append((vecino, profundidad + 1))
+    # Si no se encuentra la solución, devolvemos una lista vacía
+    return [] 
+
+#Búsqueda por profunidad LIMITADA
+def profundidad_limitada(grafo, actual, meta, limite, ruta, visitados):
+    #Se agrega el origen a la lista de visitados
+    visitados.append(actual)
+    #Verifiación si el nodo actual es la meta o si el limite es igual a 0
+    if actual == meta or limite == 0:
+        #Verificación que el nodo actual es la meta
+        if actual == meta:
+            #Verificaicón si el nodo actual no esta en la ruta
+          if actual not in ruta:
+              #Si el nodo actual no esta en ruta lo agrega
+              ruta.append(actual)
+          print(ruta)
+        return
+    for hijo in grafo[actual]:
+        #Si el hijo del nodo actual no esta en visitados, lo agrega 
+        if hijo not in visitados:
+            ruta.append(hijo)
+            profundidad_limitada(grafo, hijo, meta, limite-1, ruta, visitados)
+            ruta.pop()              
+
+
 #CREACIÓN DE GRAFOS
 #Grafo de busqueda a lo ancho
 #Grafo con los pesos iguales a 5 en todas las rutas
-grafo_pesos_iguales = {'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5)],
-		  'Valladolid' : [('Felipe Carrillo Puerto',5)],
-      'Felipe Carrillo Puerto': [('Campeche',5)],
+grafo_pesos_iguales = {
+    		'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5)],
+		  	'Valladolid' : [('Felipe Carrillo Puerto',5)],
+      		'Felipe Carrillo Puerto': [('Campeche',5)],
 			'Campeche': [('Merida',5),('Chetumal',5),('Ciudad del Carmen',5) ],
 			'Merida':[],
 			'Chetumal': [('Francisco Escarcega',5)],
@@ -139,8 +190,8 @@ grafo_pesos_iguales = {'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5
 			'Manzanillo' : [('Guadalajara',5)],
 			'Guadalajara' : [('Tepic',5),('Aguascalientes',5)],
 			'Salamanca' : [('Guanajuato',5),('Guadalajara',5)],
-      'Guanajuato' : [('Aguascalientes',5)],
-      'Aguascalientes' : [('San Luis Potosi',5)],
+      		'Guanajuato' : [('Aguascalientes',5)],
+      		'Aguascalientes' : [('San Luis Potosi',5)],
 			'Queretaro' : [('Salamanca',5), ('Atlacomulco',5), ('San Luis Potosi',5)],
 			'Atlacomulco' : [],
 			'Pachuca de Soto' : [('Tuxpan de Rodiguez Cano',5)],
@@ -183,11 +234,11 @@ grafo_pesos_iguales = {'Cancún': [('Valladolid',5), ('Felipe Carrillo Puerto',5
 			'Cabo San Lucas' : []
 		}
 
-
+#Grafo con los pesos correspondientes
 grafo_con_pesos = {
-      'Cancún': {'Valladolid': 90, 'Felipe Carrillo Puerto' : 100 },
-		  'Valladolid' : {'Felipe Carrillo Puerto': 90 },
-      'Felipe Carrillo Puerto': {'Campeche' : 60 },
+      		'Cancún': {'Valladolid': 90, 'Felipe Carrillo Puerto' : 100 },
+		  	'Valladolid' : {'Felipe Carrillo Puerto': 90 },
+      		'Felipe Carrillo Puerto': {'Campeche' : 60 },
 			'Campeche': { 'Merida': 90, 'Chetumal': 100, 'Ciudad del Carmen' : 90 },
 			'Merida': {},
 			'Chetumal': {'Francisco Escarcega' : 110 },
@@ -221,8 +272,8 @@ grafo_con_pesos = {
 			'Manzanillo' : {'Guadalajara':80},
 			'Guadalajara' : {'Tepic':110,'Aguascalientes':70},
 			'Salamanca' : {'Guanajuato':90,'Guadalajara':90},
-      'Guanajuato' : { 'Aguascalientes' : 80 },
-      'Aguascalientes' : {'San Luis Potosi': 100 },
+      		'Guanajuato' : { 'Aguascalientes' : 80 },
+     		'Aguascalientes' : {'San Luis Potosi': 100 },
 			'Queretaro' : {'Salamanca':90, 'Atlacomulco': 90, 'San Luis Potosi' :90 },
 			'Atlacomulco' : {},
 			'Pachuca de Soto' : {'Tuxpan de Rodiguez Cano':110},
@@ -268,10 +319,12 @@ grafo_con_pesos = {
 
 origen = input("Ingresa el nodo de origen: ")
 destino = input("Ingresa el nodo de destino: ")
+limite = int(input("Ingrese el límite: "))
 
 #Búsqueda a los ancho
 print("\nBúsqueda a lo ancho:")
 Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen), str(destino))
+
 print("----------------------------------------------------------\n")
 #Búsqueda por Dijkstra
 print("Dijkstra:")
@@ -282,8 +335,22 @@ else:
     distancia, camino = mensaje
     print(f"La ruta más corta desde {origen} hasta {destino} es: {camino}")
     print(f"Su peso es: {distancia}")
+
 print("----------------------------------------------------------\n")
-#Búsqueda por profundidad
+#Búsqueda por profundidad "simple"
 print("Búsqueda por profundidad:")
 ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen), str(destino))
 print("Camino encontrado = ", ' -> '.join(ruta))
+
+print("----------------------------------------------------------\n")
+#Búsqueda por profundidad iterativa
+print("Búsqueda por profundidad iterativa:")
+ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen), str(destino))
+print(ruta_iterativa)
+
+print("----------------------------------------------------------\n")
+#Búsqueda por profundidad limitada
+print("Búsqueda por profundidad limitada:")
+ruta = [origen]
+visitados = []
+profundidad_limitada(grafo_con_pesos, str(origen), str(destino), limite, ruta, visitados)
