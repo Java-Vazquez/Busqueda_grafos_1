@@ -1,5 +1,7 @@
 from collections import defaultdict
+from collections import deque
 import heapq
+import time
 
 #FUNCIÓN PARA COMPARACIÓN DE PESOS
 def compara_pesos(grafo):
@@ -161,6 +163,45 @@ def profundidad_limitada(grafo, actual, meta, limite, ruta, visitados):
             ruta.append(hijo)
             profundidad_limitada(grafo, hijo, meta, limite-1, ruta, visitados)
             ruta.pop()              
+
+
+#BUSQUEDA BIDIRECCIONAL (A LO ANCHO)
+def bfs_bidireccional(grafo_normal, grafo_inverso, inicio, destino):
+    # Colas de búsqueda desde el inicio y el destino
+    cola_inicio = deque([(inicio, [inicio])])
+    cola_destino = deque([(destino, [destino])])
+
+    # Conjuntos de nodos visitados desde el inicio y el destino
+    visitados_inicio = set([inicio])
+    visitados_destino = set([destino])
+
+    # Búsqueda desde el inicio y el destino simultáneamente
+    while cola_inicio and cola_destino:
+        # Búsqueda desde el inicio
+        nodo_inicio, ruta_inicio = cola_inicio.popleft()
+        for vecino_inicio, peso_inicio in grafo_normal.get(nodo_inicio, []):
+            if vecino_inicio not in visitados_inicio:
+                visitados_inicio.add(vecino_inicio)
+                nueva_ruta_inicio = ruta_inicio + [vecino_inicio]
+                cola_inicio.append((vecino_inicio, nueva_ruta_inicio))
+                if vecino_inicio in visitados_destino:
+                    interseccion = vecino_inicio
+                    ruta_destino = nueva_ruta_inicio[::-1] + [nodo for nodo in cola_destino.popleft()[1]]
+                    return ruta_inicio + ruta_destino[1:], interseccion
+
+        # Búsqueda desde el destino
+        nodo_destino, ruta_destino = cola_destino.popleft()
+        for vecino_destino, peso_destino in grafo_inverso.get(nodo_destino, []):
+            if vecino_destino not in visitados_destino:
+                visitados_destino.add(vecino_destino)
+                nueva_ruta_destino = ruta_destino + [vecino_destino]
+                cola_destino.append((vecino_destino, nueva_ruta_destino))
+                if vecino_destino in visitados_inicio:
+                    interseccion = vecino_destino
+                    ruta_inicio = nueva_ruta_destino[::-1] + [nodo for nodo in cola_inicio.popleft()[1]]
+                    return ruta_inicio + ruta_destino[1:], interseccion
+
+    return None, None
 
 
 #CREACIÓN DE GRAFOS
@@ -348,9 +389,9 @@ grafo_pesos_iguales_invertido = {
 	'Guaymas' : [('Ciudad Obregon',5)],
 	'Ciudad Obregon' : [('Topolobampo',5)],
 	'Chihuahua' : [('Juarez', 5), ('Ojinaga',5), ('Hidalgo del Parral',5)],
-	'Juarez' : [('Chihuahua',5)],
+	'Juarez' : [],
 	'Topolobampo' : [('Hidalgo del Parral',5), ('Culiacan',5)],
-	'Hidalgo del Parral' : [('Durango',5)],
+	'Hidalgo del Parral' : [('Durango',5), ('Culiacan',5)],
 	'Culiacan' : [('Mazatlan',5)],
 	'Mazatlan' : [('Durango',5),('Tepic',5)],
  	'Tepic' : [('Guadalajara',5)],
@@ -358,51 +399,54 @@ grafo_pesos_iguales_invertido = {
 	'Monclava' : [('Piedras Negras',5), ('Monterrey',5), ('Torreon',5)],
 	'Torreon' : [('Durango',5)],
 	'Piedras Negras' : [('Nuevo Laredo',5)],
-	'Nuevo Laredo' : [('Raynosa',5)],
- 	'Raynosa' : [('Matamoros',5)],
+	'Nuevo Laredo' : [('Reynosa',5), ('Monterrey',5)],
+ 	'Reynosa' : [('Matamoros',5)],
 	'Matamoros' : [('Ciudad Victoria',5)],
-	'Ciudad Victoria' : [('Tampico')],
-	'Soto la Marina' : [('Ciudad Victoria',5)],
+	'Ciudad Victoria' : [('Tampico',5), ('Soto la Marina',5)],
+	'Soto la Marina' : [],
+    'Monterrey' : [('Ciudad Victoria',5)],
 	'Durango' : [('Ciudad Victoria',5), ('San Luis Potosi',5)],
-	'Zacatecas' : [('San Luis Potosi',5)],
-	'San Luis Potosi' : [('Aguascalientes',5), ('Queretaro',5)],
+	'Zacatecas' : [],
+	'San Luis Potosi' : [('Aguascalientes',5), ('Queretaro',5), ('Zacatecas',5)],
 	'Aguascalientes' : [('Guadalajara', 5), ('Guanajuato',5)],
 	'Guanajuato' : [('Salamanca',5)],
 	'Guadalajara' : [('Salamanca',5), ('Colima',5), ('Manzanillo',5)],
 	'Manzanillo' : [('Colima', 5), ('Playa Azul',5)],
 	'Colima' : [('Morelia',5),('Playa Azul',5)],
-	'Salamanca' : [('Morelia',5)],
-	'Atlacomulco' : [('Queretaro',5)],
- 	'Queretaro' : [('Cdmx',5)],
-	'Tlaxcala' : [('Cdmx',5)],
+	'Salamanca' : [('Morelia',5),('Queretaro',5)],
+	'Atlacomulco' : [],
+ 	'Queretaro' : [('Cdmx',5), ('Atlacomulco',5)],
+	'Tlaxcala' : [],
  	'Tampico' : [('Tuxpan de Rodiguez Cano',5)],
 	'Tuxpan de Rodiguez Cano' : [('Pachuca de Soto',5)],
 	'Pachuca de Soto' : [('Cdmx',5)],
 	'Playa Azul' : [('Zihuatanejo',5)],
 	'Zihuatanejo' : [('Ciudad Altamirano',5)],
 	'Ciudad Altamirano' : [('Toluca de Lerdo', 5), ('Cuernavaca', 5), ('Iguala', 5)],
-	'Chilpancingo' : [('Iguala',5)],
-	'Acapulco' : [('Chilpancingo', 5)],
- 	'Pinotepa Nacional' : [('Acapulco',5)],
-	'Puerto Angel' : [('Pinotepa Nacional',5)],
-	'Oaxaca' : [('Puerto Angel',5)],
-	'Cdmx' : [('Cuernavaca',5), ('Puebla',5)],
+    'Iguala' : [('Chilpancingo', 5)],
+	'Chilpancingo' : [('Acapulco',5)],
+	'Acapulco' : [('Pinotepa Nacional', 5)],
+ 	'Pinotepa Nacional' : [('Puerto Angel',5)],
+	'Puerto Angel' : [('Oaxaca',5)],
+	'Oaxaca' : [('Tehuacan',5)],
+	'Cdmx' : [('Cuernavaca',5), ('Puebla',5), ('Tlaxcala',5)],
 	'Cuernavaca' :[('Iguala',5), ('Izucar de Matamoros',5)],
-	'Puebla' : [('Izucar de Matamoros',5)],
-	'Vercruz' : [('Cordoba',5)],
-	'Cordoba' : [('Puebla',5)],
+	'Puebla' : [('Izucar de Matamoros',5), ('Cordoba',5)],
+	'Vercruz' : [],
+	'Cordoba' : [('Veracruz',5)],
 	'Izucar de Matamoros' : [('Oaxaca',5)],
-	'Tehuacan' : [('Oaxaca',5)],
+	'Tehuacan' : [],
 	'Oaxaca' : [('Alvarado',5),], 
     'Alvarado' : [('Ayucan',5)],
-    'Acayucan' : [('Villa Hermosa', 5), ('Tuxtla',5)],
-    'Tehuantepec' : [('Acayucan',5)],
+    'Acayucan' : [('Villa Hermosa', 5), ('Tuxtla',5), ('Tehuantepec',5)],
+    'Tehuantepec' : [],
     'Tuxtla' : [('Ciudad del Carmen',5)],
     'Villa Hermosa' : [('Ciudad del Carmen',5)],
     'Ciudad del Carmen' : [('Campeche',5)],
-    'Merida' : [('Campeche',5)],
-    'Francisco Escarcega' : [('Chetumal',5)],
-    'Chetumal' : [('Campeche',5)],
+    'Campeche' : [('Merida',5),('Felipe Carrillo Puerto',5),('Chetumal',5)],
+    'Merida' : [],
+    'Francisco Escarcega' : [],
+    'Chetumal' : [('Francisco Escarcega',5)],
     'Felipe Carrillo Puerto' : [('Valladolid', 5), ('Cancún',5)],
     'Valladolid' : [('Cancún', 5)],
     'Cancún' : []  
@@ -424,12 +468,22 @@ compara_pesos(grafo_con_pesos)
 
 #Búsqueda a los ancho
 print("\nBúsqueda a lo ancho:")
+tiempo_inicio = time.time()
 Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen_verifiaco), str(destino_verificado))
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por Dijkstra
 print("Dijkstra:")
+tiempo_inicio = time.time()
 mensaje = dijkstra(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
 if mensaje is None:
     print(f"No se encontró ruta desde {origen_verifiaco} hasta {destino_verificado}.")
 else:
@@ -440,7 +494,12 @@ else:
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad "simple"
 print("Búsqueda por profundidad:")
+tiempo_inicio = time.time()
 ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
 print("Camino encontrado = ", ' -> '.join(ruta))
 
 print("----------------------------------------------------------\n")
@@ -448,10 +507,35 @@ print("----------------------------------------------------------\n")
 print("Búsqueda por profundidad limitada:")
 ruta = [origen_verifiaco]
 visitados = []
+tiempo_inicio = time.time()
 profundidad_limitada(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado), limite, ruta, visitados)
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad iterativa
 print("Búsqueda por profundidad iterativa:")
+tiempo_inicio = time.time()
 ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
 print(ruta_iterativa)
+
+print("----------------------------------------------------------\n")
+#Búsqueda bidireccional
+print("Búsqueda bidireccional:")
+tiempo_inicio = time.time()
+ruta_bi, interseccion = bfs_bidireccional(grafo_pesos_iguales, grafo_pesos_iguales_invertido, str(origen_verifiaco), str(destino_verificado))
+tiempo_fin = time.time()
+# Calcular la diferencia entre ambos tiempos
+tiempo_total = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total, "segundos en ejecutarse")
+if ruta_bi is not None:
+    print("La mejor ruta es:", ruta_bi)
+    print("El nodo de intersección es:", interseccion)
+else:
+    print("No se encontró ninguna ruta entre los nodos especificados")
