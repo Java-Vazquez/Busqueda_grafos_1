@@ -1,6 +1,19 @@
 from collections import defaultdict
 import heapq
 
+#FUNCIÓN PARA COMPARACIÓN DE PESOS
+def compara_pesos(grafo):
+    pesos = set()
+    for nodo, edges in grafo.items():
+        for edge in edges:
+            peso = edge[1]
+            pesos.add(peso)
+    if len(pesos) > 1:
+        print("No todos los pesos son iguales")
+    else:
+        print("Todos los pesos son iguales")
+
+
 #BÚSQUEDA A LO ANCHO
 def Busqueda_a_lo_ancho(grafo, origen, destino):
 	visitados = []
@@ -72,7 +85,7 @@ def dijkstra(grafo, inicio, fin):
     # Si no encontramos una ruta al nodo final, regresar None
     return None
 	
-#Búsqueda por profundidad SIMPLE
+#BÚSQUEDA POR PROFUNDIDAD SIMPLE
 # Definimos la función para realizar la búsqueda por profundidad
 def busqueda_profundidad_con_peso(grafo, nodo_inicial, nodo_final):
     # Creamos una lista para almacenar los nodos visitados
@@ -100,7 +113,7 @@ def busqueda_profundidad_con_peso(grafo, nodo_inicial, nodo_final):
     return ruta
 
 
-#Búsqueda por profundidad ITERATIVA
+#BÚSQUEDA POR PROFUNDIDAD ITERATIVA
 # Definimos la función para realizar la búsqueda por profundidad iterativa
 def busqueda_profundidad_iterativa(grafo, nodo_inicial, nodo_final):
     # Iteramos sobre la profundidad máxima desde 0 hasta el infinito
@@ -128,7 +141,7 @@ def busqueda_profundidad_iterativa(grafo, nodo_inicial, nodo_final):
     # Si no se encuentra la solución, devolvemos una lista vacía
     return [] 
 
-#Búsqueda por profunidad LIMITADA
+#BÚSQUEDA POR PROFUNDIDAD LIMITADA
 def profundidad_limitada(grafo, actual, meta, limite, ruta, visitados):
     #Se agrega el origen a la lista de visitados
     visitados.append(actual)
@@ -321,6 +334,13 @@ origen = input("Ingresa el nodo de origen: ")
 destino = input("Ingresa el nodo de destino: ")
 limite = int(input("Ingrese el límite: "))
 
+#Comparación de pesos
+print("\nDel grafo 1:")
+compara_pesos(grafo_pesos_iguales)
+print("\n---------------------------------------------------------")
+print("Del grafo 2:")
+compara_pesos(grafo_con_pesos)
+
 #Búsqueda a los ancho
 print("\nBúsqueda a lo ancho:")
 Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen), str(destino))
@@ -343,14 +363,14 @@ ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen), str(destino))
 print("Camino encontrado = ", ' -> '.join(ruta))
 
 print("----------------------------------------------------------\n")
-#Búsqueda por profundidad iterativa
-print("Búsqueda por profundidad iterativa:")
-ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen), str(destino))
-print(ruta_iterativa)
-
-print("----------------------------------------------------------\n")
 #Búsqueda por profundidad limitada
 print("Búsqueda por profundidad limitada:")
 ruta = [origen]
 visitados = []
 profundidad_limitada(grafo_con_pesos, str(origen), str(destino), limite, ruta, visitados)
+
+print("----------------------------------------------------------\n")
+#Búsqueda por profundidad iterativa
+print("Búsqueda por profundidad iterativa:")
+ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen), str(destino))
+print(ruta_iterativa)
