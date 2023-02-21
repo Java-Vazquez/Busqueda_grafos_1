@@ -554,6 +554,7 @@ lista_de_tipos_totales.append(tiempo_total_didireccional)
 #Creamos una variable en la cual va a sacar el tiempo menor
 menor_tiempo = min(lista_de_tipos_totales)
 
+#Switch para saber cual de los tiempos de los argoritmos fue el menor
 if menor_tiempo == tiempo_total_a_lo_ancho:
 	print('El algoritmo de búsqueda más eficiente: Búsqueda a los ancho')
 	print('Con un tiempo de: ', menor_tiempo)
@@ -572,5 +573,6 @@ elif menor_tiempo == tiempo_total_iterativa:
 elif menor_tiempo == tiempo_total_didireccional:
 	print('El algoritmo de búsqueda más eficiente: Búsqueda bidireccional')
 	print('Con un tiempo de: ', menor_tiempo)
+#Validación de error si no muestra ningún tiempo
 else:
 	print('error')
