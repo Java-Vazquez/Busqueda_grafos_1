@@ -458,6 +458,7 @@ destino = input("Ingresa el nodo de destino: ")
 destino_verificado = destino.title()
 limite = int(input("Ingrese el límite: "))
 
+lista_de_tipos_totales = []
 
 #Comparación de pesos
 print("\nDel grafo 1:")
@@ -472,8 +473,8 @@ tiempo_inicio = time.time()
 Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen_verifiaco), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_a_lo_ancho = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_a_lo_ancho, "segundos en ejecutarse")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por Dijkstra
@@ -482,8 +483,8 @@ tiempo_inicio = time.time()
 mensaje = dijkstra(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_dijkstra = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_dijkstra, "segundos en ejecutarse")
 if mensaje is None:
     print(f"No se encontró ruta desde {origen_verifiaco} hasta {destino_verificado}.")
 else:
@@ -498,8 +499,8 @@ tiempo_inicio = time.time()
 ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_simple = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_simple, "segundos en ejecutarse")
 print("Camino encontrado = ", ' -> '.join(ruta))
 
 print("----------------------------------------------------------\n")
@@ -511,8 +512,8 @@ tiempo_inicio = time.time()
 profundidad_limitada(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado), limite, ruta, visitados)
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_limitada = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_limitada, "segundos en ejecutarse")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad iterativa
@@ -521,8 +522,8 @@ tiempo_inicio = time.time()
 ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_iterativa = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_iterativa, "segundos en ejecutarse")
 print(ruta_iterativa)
 
 print("----------------------------------------------------------\n")
@@ -532,10 +533,44 @@ tiempo_inicio = time.time()
 ruta_bi, interseccion = bfs_bidireccional(grafo_pesos_iguales, grafo_pesos_iguales_invertido, str(origen_verifiaco), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
-tiempo_total = tiempo_fin - tiempo_inicio
-print("La función tardó", tiempo_total, "segundos en ejecutarse")
+tiempo_total_didireccional = tiempo_fin - tiempo_inicio
+print("La función tardó", tiempo_total_didireccional, "segundos en ejecutarse")
 if ruta_bi is not None:
     print("La mejor ruta es:", ruta_bi)
     print("El nodo de intersección es:", interseccion)
 else:
     print("No se encontró ninguna ruta entre los nodos especificados")
+    
+print("----------------------------------------------------------\n")
+
+#Se egregan los tiempos totales de los algoritmos a una lista
+lista_de_tipos_totales.append(tiempo_total_a_lo_ancho)
+lista_de_tipos_totales.append(tiempo_total_dijkstra)
+lista_de_tipos_totales.append(tiempo_total_simple)
+lista_de_tipos_totales.append(tiempo_total_limitada)
+lista_de_tipos_totales.append(tiempo_total_iterativa)
+lista_de_tipos_totales.append(tiempo_total_didireccional)
+
+#Creamos una variable en la cual va a sacar el tiempo menor
+menor_tiempo = min(lista_de_tipos_totales)
+
+if menor_tiempo == tiempo_total_a_lo_ancho:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda a los ancho')
+	print('Con un tiempo de: ', menor_tiempo)
+elif menor_tiempo == tiempo_total_dijkstra:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda por Dijkstra')
+	print('Con un tiempo de: ', menor_tiempo)
+elif menor_tiempo == tiempo_total_simple:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad')
+	print('Con un tiempo de: ', menor_tiempo)
+elif menor_tiempo == tiempo_total_limitada:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad limitada')
+	print('Con un tiempo de: ', menor_tiempo)
+elif menor_tiempo == tiempo_total_iterativa:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad iterativa')
+	print('Con un tiempo de: ', menor_tiempo)
+elif menor_tiempo == tiempo_total_didireccional:
+	print('El algoritmo de búsqueda más eficiente: Búsqueda bidireccional')
+	print('Con un tiempo de: ', menor_tiempo)
+else:
+	print('error')
