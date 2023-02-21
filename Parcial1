@@ -177,8 +177,8 @@ grafo_pesos_iguales = {
 			'Ciudad del Carmen': [('Villa Hermosa',5),('Tuxtla',5)],
 			'Villa Hermosa': [('Acayucan',5)], 
 			'Tuxtla': [('Acayucan',5)],
-			'Acayucan': [('Tehuacantepec',5), ('Alvarado',5)],
-			'Tehuacantepec' : [],
+			'Acayucan': [('Tehuantepec',5), ('Alvarado',5)],
+			'Tehuantepec' : [],
 			'Alvarado'  : [('Oaxaca',5)],
 			'Oaxaca' : [('Puerto Angel',5),('Tehuacan',5),('Izucar de Matamoros',5)],
 			'Tehuacan' : [],
@@ -259,8 +259,8 @@ grafo_con_pesos = {
 			'Ciudad del Carmen': {'Villa Hermosa': 90, 'Tuxtla' : 90 },
 			'Villa Hermosa': { 'Acayucan': 90 }, 
 			'Tuxtla': { 'Acayucan' : 90 },
-			'Acayucan': {'Tehuacantepec': 80, 'Alvarado' : 110 },
-			'Tehuacantepec' : {},
+			'Acayucan': {'Tehuantepec': 80, 'Alvarado' : 110 },
+			'Tehuantepec' : {},
 			'Alvarado'  : { 'Oaxaca' : 100 },
 			'Oaxaca' : { 'Puerto Angel': 90 , 'Tehuacan': 80, 'Izucar de Matamoros': 90 },
 			'Tehuacan' : {},
@@ -330,9 +330,90 @@ grafo_con_pesos = {
 		}
 
 
+#Grafo con pesos iguales invertido 
+grafo_pesos_iguales_invertido = {
+	'Cabo San Lucas' : [('La Paz', 5)],
+ 	'La Paz' : [('Santo Domingo',5)],
+	'Santo Domingo' : [('Santa Rosalia',5)],
+	'Santa Rosalia' : [('Santa Quintin',5)],
+	'Santa Quintin' : [('Ensenada',5)],
+ 	'Ensenada' : [('San Felipe',5), ('Tijuana',5)],
+	'San Felipe' : [('Mexicalli',5)],
+	'Tijuana' : [('Mexicalli',5)],
+	'Mexicalli' : [('Santa Ana')],
+	'Santa Ana' : [('Agua Prieta',5), ('Hermosillo',5)],
+	'Agua Prieta' : [('Janos',5)],
+	'Hermosillo' : [('Guaymas',5)],
+	'Janos' : [('Chihuahua',5)],
+	'Guaymas' : [('Ciudad Obregon',5)],
+	'Ciudad Obregon' : [('Topolobampo',5)],
+	'Chihuahua' : [('Juarez', 5), ('Ojinaga',5), ('Hidalgo del Parral',5)],
+	'Juarez' : [('Chihuahua',5)],
+	'Topolobampo' : [('Hidalgo del Parral',5), ('Culiacan',5)],
+	'Hidalgo del Parral' : [('Durango',5)],
+	'Culiacan' : [('Mazatlan',5)],
+	'Mazatlan' : [('Durango',5),('Tepic',5)],
+ 	'Tepic' : [('Guadalajara',5)],
+	'Ojinaga' : [('Monclava',5)],
+	'Monclava' : [('Piedras Negras',5), ('Monterrey',5), ('Torreon',5)],
+	'Torreon' : [('Durango',5)],
+	'Piedras Negras' : [('Nuevo Laredo',5)],
+	'Nuevo Laredo' : [('Raynosa',5)],
+ 	'Raynosa' : [('Matamoros',5)],
+	'Matamoros' : [('Ciudad Victoria',5)],
+	'Ciudad Victoria' : [('Tampico')],
+	'Soto la Marina' : [('Ciudad Victoria',5)],
+	'Durango' : [('Ciudad Victoria',5), ('San Luis Potosi',5)],
+	'Zacatecas' : [('San Luis Potosi',5)],
+	'San Luis Potosi' : [('Aguascalientes',5), ('Queretaro',5)],
+	'Aguascalientes' : [('Guadalajara', 5), ('Guanajuato',5)],
+	'Guanajuato' : [('Salamanca',5)],
+	'Guadalajara' : [('Salamanca',5), ('Colima',5), ('Manzanillo',5)],
+	'Manzanillo' : [('Colima', 5), ('Playa Azul',5)],
+	'Colima' : [('Morelia',5),('Playa Azul',5)],
+	'Salamanca' : [('Morelia',5)],
+	'Atlacomulco' : [('Queretaro',5)],
+ 	'Queretaro' : [('CDMX',5)],
+	'Tlaxcala' : [('CDMX',5)],
+ 	'Tampico' : [('Tuxpan de Rodiguez Cano',5)],
+	'Tuxpan de Rodiguez Cano' : [('Pachuca de Soto',5)],
+	'Pachuca de Soto' : [('CDMX',5)],
+	'Playa Azul' : [('Zihuatanejo',5)],
+	'Zihuatanejo' : [('Ciudad Altamirano',5)],
+	'Ciudad Altamirano' : [('Toluca de Lerdo', 5), ('Cuernavaca', 5), ('Iguala', 5)],
+	'Chilpancingo' : [('Iguala',5)],
+	'Acapulco' : [('Chilpancingo', 5)],
+ 	'Pinotepa Nacional' : [('Acapulco',5)],
+	'Puerto Angel' : [('Pinotepa Nacional',5)],
+	'Oaxaca' : [('Puerto Angel',5)],
+	'CDMX' : [('Cuernavaca',5), ('Puebla',5)],
+	'Cuernavaca' :[('Iguala',5), ('Izucar de Matamoros',5)],
+	'Puebla' : [('Izucar de Matamoros',5)],
+	'Vercruz' : [('Cordoba',5)],
+	'Cordoba' : [('Puebla',5)],
+	'Izucar de Matamoros' : [('Oaxaca',5)],
+	'Tehuacan' : [('Oaxaca',5)],
+	'Oaxaca' : [('Alvarado',5),], 
+    'Alvarado' : [('Ayucan',5)],
+    'Acayucan' : [('Villa Hermosa', 5), ('Tuxtla',5)],
+    'Tehuantepec' : [('Acayucan',5)],
+    'Tuxtla' : [('Ciudad del Carmen',5)],
+    'Villa Hermosa' : [('Ciudad del Carmen',5)],
+    'Ciudad del Carmen' : [('Campeche',5)],
+    'Merida' : [('Campeche',5)],
+    'Francisco Escarcega' : [('Chetumal',5)],
+    'Chetumal' : [('Campeche',5)],
+    'Felipe Carrillo Puerto' : [('Valladolid', 5), ('Cancún',5)],
+    'Valladolid' : [('Cancún', 5)],
+    'Cancún' : []  
+}
+
 origen = input("Ingresa el nodo de origen: ")
+origen_verifiaco = origen.title()
 destino = input("Ingresa el nodo de destino: ")
+destino_verificado = destino.title()
 limite = int(input("Ingrese el límite: "))
+
 
 #Comparación de pesos
 print("\nDel grafo 1:")
@@ -343,34 +424,34 @@ compara_pesos(grafo_con_pesos)
 
 #Búsqueda a los ancho
 print("\nBúsqueda a lo ancho:")
-Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen), str(destino))
+Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen_verifiaco), str(destino_verificado))
 
 print("----------------------------------------------------------\n")
 #Búsqueda por Dijkstra
 print("Dijkstra:")
-mensaje = dijkstra(grafo_con_pesos, str(origen), str(destino))
+mensaje = dijkstra(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 if mensaje is None:
-    print(f"No se encontró ruta desde {origen} hasta {destino}.")
+    print(f"No se encontró ruta desde {origen_verifiaco} hasta {destino_verificado}.")
 else:
     distancia, camino = mensaje
-    print(f"La ruta más corta desde {origen} hasta {destino} es: {camino}")
+    print(f"La ruta más corta desde {origen_verifiaco} hasta {destino_verificado} es: {camino}")
     print(f"Su peso es: {distancia}")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad "simple"
 print("Búsqueda por profundidad:")
-ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen), str(destino))
+ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 print("Camino encontrado = ", ' -> '.join(ruta))
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad limitada
 print("Búsqueda por profundidad limitada:")
-ruta = [origen]
+ruta = [origen_verifiaco]
 visitados = []
-profundidad_limitada(grafo_con_pesos, str(origen), str(destino), limite, ruta, visitados)
+profundidad_limitada(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado), limite, ruta, visitados)
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad iterativa
 print("Búsqueda por profundidad iterativa:")
-ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen), str(destino))
+ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
 print(ruta_iterativa)
