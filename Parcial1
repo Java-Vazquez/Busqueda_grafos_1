@@ -473,6 +473,7 @@ grafo_pesos_iguales_invertido = {
     'Valladolid' : [('Cancún', 5)],
     'Cancún' : []  
 }
+
 lista_de_tipos_totales = []
 banderaOrigen = False
 banderaDestino = False
