@@ -3,6 +3,28 @@ from collections import deque
 import heapq
 import time
 
+#FUNCIÓN PARA IMPRIMIR GAFO
+#MUESTRA EL GRAFO
+def imprimir(grafo):
+	print("Grafo: \n")
+	for key, lista in grafo.items():
+		print(key)
+		print(lista)
+print("--------------------------------")
+
+#FUNCIÓN PARA VERIFICAR VALIDEX DE NODOS
+def verificacion(nodo):
+  bandera = False
+  todos_los_nodos = ['Cabo San Lucas','La Paz','Santo Domingo','Santa Rosalia','Santa Quintin','Ensenada','San Felipe','Tijuana','Mexicalli','Santa Ana','Agua Prieta','Hermosillo','Janos','Guaymas','Ciudad Obregon','Chihuahua','Juarez','Topolobampo','Hidalgo del Parral','Culiacan','Mazatlan','Tepic','Ojinaga','Monclava','Torreon','Piedras Negras','Nuevo Laredo','Reynosa','Matamoros','Ciudad Victoria','Soto la Marina','Monterrey','Durango','Zacatecas','San Luis Potosi','Aguascalientes','Guanajuato','Guadalajara','Manzanillo','Colima','Salamanca','Atlacomulco','Queretaro','Tlaxcala','Tampico','Tuxpan de Rodiguez Cano','Pachuca de Soto','Playa Azul','Zihuatanejo','Ciudad Altamirano','Iguala','Chilpancingo','Acapulco','Pinotepa Nacional','Puerto Angel','Oaxaca','Cdmx','Cuernavaca','Puebla','Vercruz','Cordoba','Izucar de Matamoros','Tehuacan','Oaxaca','Alvarado','Acayucan','Tehuantepec','Tuxtla','Villa Hermosa','Ciudad del Carmen','Campeche','Merida','Francisco Escarcega','Chetumal','Felipe Carrillo Puerto','Valladolid','Cancún']
+  #for elemento in todos_los_nodos:
+  if nodo in todos_los_nodos: 
+        print("El elemento", nodo, "está en la lista, puede continuar...\n") 
+        bandera = True
+        return bandera
+  else: 
+        print("El elemento", nodo, "no está en la lista, intente de nuevo...\n")
+        return bandera
+
 #FUNCIÓN PARA COMPARACIÓN DE PESOS
 def compara_pesos(grafo):
     pesos = set()
@@ -451,14 +473,23 @@ grafo_pesos_iguales_invertido = {
     'Valladolid' : [('Cancún', 5)],
     'Cancún' : []  
 }
-
-origen = input("Ingresa el nodo de origen: ")
-origen_verifiaco = origen.title()
-destino = input("Ingresa el nodo de destino: ")
-destino_verificado = destino.title()
-limite = int(input("Ingrese el límite: "))
-
 lista_de_tipos_totales = []
+banderaOrigen = False
+banderaDestino = False
+
+imprimir(grafo_pesos_iguales)
+
+while not banderaOrigen:
+	destino = input("Ingresa el nodo de destino: ")
+	origen_verificado = destino.title()
+	banderaOrigen = verificacion(origen_verificado)
+
+while not banderaDestino:
+	destino = input("Ingresa el nodo de destino: ")
+	destino_verificado = destino.title()
+	banderaDestino = verificacion(destino_verificado)
+
+limite = int(input("Ingrese el límite: "))
 
 #Comparación de pesos
 print("\nDel grafo 1:")
@@ -470,7 +501,7 @@ compara_pesos(grafo_con_pesos)
 #Búsqueda a los ancho
 print("\nBúsqueda a lo ancho:")
 tiempo_inicio = time.time()
-Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen_verifiaco), str(destino_verificado))
+Busqueda_a_lo_ancho(grafo_pesos_iguales, str(origen_verificado), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_a_lo_ancho = tiempo_fin - tiempo_inicio
@@ -480,23 +511,23 @@ print("----------------------------------------------------------\n")
 #Búsqueda por Dijkstra
 print("Dijkstra:")
 tiempo_inicio = time.time()
-mensaje = dijkstra(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+mensaje = dijkstra(grafo_con_pesos, str(origen_verificado), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_dijkstra = tiempo_fin - tiempo_inicio
 print("La función tardó", tiempo_total_dijkstra, "segundos en ejecutarse")
 if mensaje is None:
-    print(f"No se encontró ruta desde {origen_verifiaco} hasta {destino_verificado}.")
+    print(f"No se encontró ruta desde {origen_verificado} hasta {destino_verificado}.")
 else:
     distancia, camino = mensaje
-    print(f"La ruta más corta desde {origen_verifiaco} hasta {destino_verificado} es: {camino}")
+    print(f"La ruta más corta desde {origen_verificado} hasta {destino_verificado} es: {camino}")
     print(f"Su peso es: {distancia}")
 
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad "simple"
 print("Búsqueda por profundidad:")
 tiempo_inicio = time.time()
-ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+ruta = busqueda_profundidad_con_peso(grafo_con_pesos, str(origen_verificado), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_simple = tiempo_fin - tiempo_inicio
@@ -506,10 +537,10 @@ print("Camino encontrado = ", ' -> '.join(ruta))
 print("----------------------------------------------------------\n")
 #Búsqueda por profundidad limitada
 print("Búsqueda por profundidad limitada:")
-ruta = [origen_verifiaco]
+ruta = [origen_verificado]
 visitados = []
 tiempo_inicio = time.time()
-profundidad_limitada(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado), limite, ruta, visitados)
+profundidad_limitada(grafo_con_pesos, str(origen_verificado), str(destino_verificado), limite, ruta, visitados)
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_limitada = tiempo_fin - tiempo_inicio
@@ -519,7 +550,7 @@ print("----------------------------------------------------------\n")
 #Búsqueda por profundidad iterativa
 print("Búsqueda por profundidad iterativa:")
 tiempo_inicio = time.time()
-ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen_verifiaco), str(destino_verificado))
+ruta_iterativa = busqueda_profundidad_iterativa(grafo_con_pesos, str(origen_verificado), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_iterativa = tiempo_fin - tiempo_inicio
@@ -530,7 +561,7 @@ print("----------------------------------------------------------\n")
 #Búsqueda bidireccional
 print("Búsqueda bidireccional:")
 tiempo_inicio = time.time()
-ruta_bi, interseccion = bfs_bidireccional(grafo_pesos_iguales, grafo_pesos_iguales_invertido, str(origen_verifiaco), str(destino_verificado))
+ruta_bi, interseccion = bfs_bidireccional(grafo_pesos_iguales, grafo_pesos_iguales_invertido, str(origen_verificado), str(destino_verificado))
 tiempo_fin = time.time()
 # Calcular la diferencia entre ambos tiempos
 tiempo_total_didireccional = tiempo_fin - tiempo_inicio
