@@ -480,7 +480,7 @@ banderaDestino = False
 imprimir(grafo_pesos_iguales)
 
 while not banderaOrigen:
-	destino = input("Ingresa el nodo de destino: ")
+	destino = input("Ingresa el nodo de origen: ")
 	origen_verificado = destino.title()
 	banderaOrigen = verificacion(origen_verificado)
 
@@ -587,22 +587,22 @@ menor_tiempo = min(lista_de_tipos_totales)
 
 #Switch para saber cual de los tiempos de los argoritmos fue el menor
 if menor_tiempo == tiempo_total_a_lo_ancho:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda a los ancho')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda a los ancho')
 	print('Con un tiempo de: ', menor_tiempo)
 elif menor_tiempo == tiempo_total_dijkstra:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda por Dijkstra')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda por Dijkstra')
 	print('Con un tiempo de: ', menor_tiempo)
 elif menor_tiempo == tiempo_total_simple:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda por profundidad')
 	print('Con un tiempo de: ', menor_tiempo)
 elif menor_tiempo == tiempo_total_limitada:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad limitada')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda por profundidad limitada')
 	print('Con un tiempo de: ', menor_tiempo)
 elif menor_tiempo == tiempo_total_iterativa:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda por profundidad iterativa')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda por profundidad iterativa')
 	print('Con un tiempo de: ', menor_tiempo)
 elif menor_tiempo == tiempo_total_didireccional:
-	print('El algoritmo de búsqueda más eficiente: Búsqueda bidireccional')
+	print('El algoritmo de búsqueda más eficiente es: Búsqueda bidireccional')
 	print('Con un tiempo de: ', menor_tiempo)
 #Validación de error si no muestra ningún tiempo
 else:
