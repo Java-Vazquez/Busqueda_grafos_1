@@ -37,4 +37,3 @@ El costo del camino recorrido; de ser pertinente.
 El nivel de profundidad en la que se encontró la respuesta/camino o en la que se detuvo la búsqueda; de ser pertinente.
 El tiempo total de ejecución de cada algoritmo de búsqueda.
 La búsqueda con el menor tiempo de ejecución.
-
