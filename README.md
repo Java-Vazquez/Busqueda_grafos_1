@@ -24,16 +24,25 @@ El código acepta y procesa el grafo de búsqueda anexado con pesos diferentes e
 Proceso interno:
 
 El código estandariza los nombres de los nodos para ser procesados independientemente si se escriben en mayúsculas o minúsculas o una combinación de ambos.
+
 El código verifica que el nodo de inicio y objetivo sean válidos.
+
 El código primeramente ejecuta la búsqueda por anchura y determina si los pesos en todas las acciones del árbol de búsqueda son iguales o no. Si los pesos son iguales, entonces imprime en pantalla como resultado el camino del nodo inicio al nodo final junto con el tiempo de ejecución del algoritmo (pared o procesador) y finaliza la ejecución.
-Si los pesos de las acciones en el árbol de búsqueda son diferentes, entonces ejecuta los siguientes algoritmos de búsqueda, en cualquier orden: Costo uniforme, profundidad, profundidad limitada, profundidad iterativa y bidireccional (con un algoritmo de búsqueda no informado de elección del equipo).
+
+Si los pesos de las acciones en el árbol de búsqueda son diferentes, entonces ejecuta los siguientes algoritmos de búsqueda, en cualquier orden: Costo uniforme, profundidad, profundidad limitada, profundidad iterativa y bidireccional.
+
 Una vez finalizada la ejecución de todos los algoritmos; los tiempos de ejecución de cada búsqueda son comparados y se identifica aquella búsqueda con el menor tiempo
 
 Salida:
 
 El código muestra en pantalla el grafo procesado/árbol de búsqueda.
+
 El resultado de la búsqueda; en forma de camino o de mensaje de error.
+
 El costo del camino recorrido; de ser pertinente.
+
 El nivel de profundidad en la que se encontró la respuesta/camino o en la que se detuvo la búsqueda; de ser pertinente.
+
 El tiempo total de ejecución de cada algoritmo de búsqueda.
+
 La búsqueda con el menor tiempo de ejecución.
